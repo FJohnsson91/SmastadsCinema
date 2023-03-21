@@ -1,20 +1,32 @@
-import { Routes, Route } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useEffect } from 'react'
+import { useStates } from '../utilities/states'
+
 import DisplayMovie from '../components/DisplayMovie'
 
 export default function Movies() {
 
-  const [movies, setMovies] = useState([])
+  const s = useStates('main', {
+    movies: []
+  })
+
+  const handleMovies = async () => {
+    const responseMovies = await fetch('api/movies')
+
+    if (responseMovies.ok) {
+      const fetchedMovies = await responseMovies.json()
+      s.movies = fetchedMovies
+    } else {
+      const errorMessage = await responseMovies.text()
+      console.error(errorMessage)
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      setMovies(await (await (fetch('/api/movies'))).json())
-    })()
+    handleMovies()
   }, [])
 
-  return <div className="movies">
-    {movies.map(({ id, title, description }) => <DisplayMovie
-      key={id}
+  return <div className="Movie">
+    {s.movies.map(({ title, description }) => <DisplayMovie
       title={title}
       description={description}
     />)}
