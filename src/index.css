@@ -5,72 +5,23 @@
 }
 
 body {
-  background-color: #8EC5FC;
-  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+  background-color: #212529;
 }
 
-main {
-  margin-top: 80px;
+select {
+  display: block;
 }
 
-div {
+.movieDiv {
   display: inline-block;
-  justify-content: center;
-}
-
-.movie {
-  margin: 20px;
 }
 
 .screening {
-  display: inline-block;
-  padding: 10px;
-  margin: 10px;
-  background-color: #fff;
-}
-
-.screening-and-seats {
-  text-align: center;
-}
-
-.seats {
-  text-align: center;
-}
-
-.seats>.row {
-  display: inline-block;
-}
-
-.seats>.row>div {
-  background-color: white;
-  color: black;
-  float: right;
-  text-align: center;
-  padding-top: 3px;
-  border-top-left-radius: 25%;
-  border-top-right-radius: 25%;
-  width: 30px;
-  height: 30px;
-  margin: 3px 1px;
-  cursor: pointer;
-}
-
-.seats>.row>.selected {
-  background-color: #72b457;
   color: white;
 }
 
-.seats>.row>.occupied {
-  background-color: rgb(152, 28, 28);
-  color: white;
-  cursor: not-allowed;
-}
-
-.poster-screen {
-  width: 350px;
-  object-fit: cover;
-  aspect-ratio: 20 / 9;
-  border: 5px solid #fff;
-  border-radius: 10px;
-  margin-bottom: 20px;
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

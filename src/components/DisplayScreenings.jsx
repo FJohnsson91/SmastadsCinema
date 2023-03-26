@@ -1,17 +1,34 @@
+import React from "react"
+import { Link } from "react-router-dom"
+import Card from "react-bootstrap/Card"
+import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
+
 export default function DisplayScreenings(props) {
+  const { date, movies } = props
 
-  let { screeningTime, movie, auditorium } = props
-
-  return <div className="screening">
-    <h2>{new Intl.DateTimeFormat('sv-SE', {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    }).format(new Date(screeningTime))}</h2>
-    <h2>{movie}</h2>
-    <h2>{auditorium}</h2>
-  </div>
+  return (
+    <div className="screening">
+      <h2>{date}</h2>
+      <Row>
+        {movies.map((movie) => (
+          <Col key={movie.id}>
+            <Link to={`/movie-detail/${movie.id}`}>
+              <Card style={{ minWidth: "18rem", margin: "10px", maxWidth: "280px" }}>
+                <Card.Body>
+                  <Card.Title>{movie.title}</Card.Title>
+                  <Card.Text>
+                    {new Intl.DateTimeFormat("en-EN", {
+                      hour: "numeric",
+                      minute: "numeric",
+                    }).format(new Date(movie.time))}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+    </div>
+  )
 }

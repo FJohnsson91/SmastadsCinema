@@ -1,35 +1,48 @@
-import { useEffect } from 'react'
-import { useStates } from '../utilities/states'
-
-import DisplayScreenings from '../components/DisplayScreenings'
+import { useEffect, useState } from "react"
+import DisplayScreenings from "../components/DisplayScreenings"
+import Container from "react-bootstrap/Container"
 
 export default function Screenings() {
-
-  const s = useStates('main', {
-    screenings: []
-  })
-
-  const handleScreenings = async () => {
-    const responseScreenings = await fetch('api/occupied_seats')
-
-    if (responseScreenings.ok) {
-      const fetchedScreenings = await responseScreenings.json()
-      s.screenings = fetchedScreenings
-    } else {
-      const errorMessage = await responseScreenings.text()
-      console.error(errorMessage)
-    }
-  }
+  const [screenings, setScreenings] = useState([])
+  const [movies, setMovies] = useState([])
 
   useEffect(() => {
-    handleScreenings()
+    (async () => {
+      const screeningsResponse = await fetch('/api/screenings')
+      const screeningsData = await screeningsResponse.json()
+      setScreenings(screeningsData)
+
+      const moviesResponse = await fetch('/api/movies')
+      const moviesData = await moviesResponse.json()
+      setMovies(moviesData)
+    })()
   }, [])
 
-  return <div className="Screening">
-    {s.screenings.map(({ screeningTime, movie, auditorium }) => <DisplayScreenings
-      screeningTime={screeningTime}
-      movie={movie}
-      auditorium={auditorium}
-    />)}
-  </div>
+  const moviesByDate = {}
+  screenings.forEach((screening) => {
+    const movie = movies.find((m) => m.id === screening.movieId)
+    if (movie) {
+      const screeningDate = new Date(screening.time).toLocaleDateString('en-EN')
+      if (!moviesByDate[screeningDate]) {
+        moviesByDate[screeningDate] = []
+      }
+      moviesByDate[screeningDate].push({
+        id: movie.id,
+        title: movie.title,
+        time: screening.time
+      })
+    }
+  })
+
+  return (
+    <Container>
+      {Object.keys(moviesByDate).map((date) => (
+        <DisplayScreenings
+          key={date}
+          date={date}
+          movies={moviesByDate[date]}
+        />
+      ))}
+    </Container>
+  )
 }

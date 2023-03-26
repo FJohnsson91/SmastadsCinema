@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 export default function NavbarSite() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
       <Container>
         <LinkContainer to='/'>
           <Nav.Link>
